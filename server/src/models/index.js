@@ -2,14 +2,8 @@ const Sequelize = require("sequelize");
 const users = require("./user");
 const resturant = require("./resturant");
 
-const dbconfig = require("../config/dbconfig").development;
-const sequelize = new Sequelize({
-  username: "postgres",
-  password: "123123",
-  database: "testproject",
-  dialect: "postgres",
-  host: "127.0.0.1",
-});
+const dbconfig = require("../config/dbconfig");
+const sequelize = new Sequelize(dbconfig);
 
 const db = {};
 db.Sequelize = Sequelize;

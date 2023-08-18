@@ -1,7 +1,22 @@
 const db = require("../models");
 
-const addUser = async (userData) => {
-  return  await db.users.create(userData);
+const addUser = async (signupData) => {
+  return await db.users.create(signupData);
+};
+const loginUser = async (email) => {
+  const user = await db.users.findOne({
+    where: { email: email },
+    attributes: ["userid", "role", "password"],
+  });
+
+  return user;
+};
+const findUserById = async (userid) => {
+  const user = await db.users.findOne({
+    where: { userid: userid },
+    attributes: ["userid", "role", "password"],
+  });
+  return user;
 };
 
-module.exports = addUser ;
+module.exports = { addUser, loginUser, findUserById };
