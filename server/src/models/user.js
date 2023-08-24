@@ -1,4 +1,4 @@
-module.exports = (sequelize, Sequelize) =>
+const users = (sequelize, Sequelize) =>
   sequelize.define("users", {
     userid: {
       type: Sequelize.DataTypes.INTEGER,
@@ -11,15 +11,15 @@ module.exports = (sequelize, Sequelize) =>
     email: {
       type: Sequelize.DataTypes.STRING,
       unique: true,
-      validator:{
-        isEmail:true
-      }
+      validator: {
+        isEmail: true,
+      },
     },
     password: {
       type: Sequelize.DataTypes.STRING,
-      validator:{
-        length:({min:6,max:10})
-      }
+      validator: {
+        length: { min: 6, max: 10 },
+      },
     },
     role: {
       type: Sequelize.DataTypes.STRING,
@@ -29,3 +29,5 @@ module.exports = (sequelize, Sequelize) =>
       type: Sequelize.STRING,
     },
   });
+
+module.exports = users;
