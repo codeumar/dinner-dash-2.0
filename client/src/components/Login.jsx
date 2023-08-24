@@ -12,7 +12,7 @@ const Login = () => {
     e.preventDefault();
     try {
       await axios
-        .post("http://127.0.0.1:3001/auth/login", {
+        .post("http://127.0.0.1:3003/auth/login", {
           email,
           password,
         })
@@ -23,17 +23,20 @@ const Login = () => {
           }
           if (res.status === 200) {
             console.log("Login successful:", res.data);
+            console.log("Body: ", res.data);
             localStorage.setItem("token", res.data.token);
-            navigate(`/home/${res.data.user.userid}`);
+            localStorage.setItem("user", JSON.stringify(res.data.userdata));
+            navigate(`/home/${res.data.userdata.userid}`);
           } else {
             setError("Incorrect password");
           }
         });
     } catch (error) {
       if (error.response && error.response.status == 404) {
-        setError("Email Not Found");
+        console.log(error);
+        setError("Email or Password are not correct");
       } else {
-        setError(error.message);
+        setError("User Does not exists");
       }
     }
   };

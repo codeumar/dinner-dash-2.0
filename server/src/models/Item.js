@@ -7,22 +7,21 @@ module.exports = (sequelize, Sequelize) =>
     },
     name: {
       type: Sequelize.STRING,
+      require: true,
     },
     description: {
       type: Sequelize.STRING,
     },
     price: {
       type: Sequelize.INTEGER,
+      require: true,
     },
-    restaurantId: { 
-      type: Sequelize.INTEGER, 
-      references: {
-        model: 'restaurants', 
-        key: 'id', 
-      },
-    },
-    quantiy: {
+    restaurantid: {
       type: Sequelize.INTEGER,
-      
+      require: true,
+    },
+    quantity: {
+      type: Sequelize.INTEGER,
+      require: true,
     },
   });

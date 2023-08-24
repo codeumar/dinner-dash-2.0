@@ -17,18 +17,31 @@ userRoute.post("/login", async (req, res) => {
       message: "User Not found",
       token: null,
     });
+  } else if (user.password != req.body.password) {
+    res.status(404).json({
+      auth: false,
+      message: "Password Not Match",
+      token: null,
+    });
   } else {
     jwt.sign({ user }, "umar", { expiresIn: "1h" }, (err, token) => {
       if (err) {
         res.status(400).json({
-          auth: true,
+          auth: false,
           message: "Error in loging in Please try again",
           token: null,
         });
       }
-      res.header({ token: token }).json({
+      const userdata = {
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        phone: user.phone,
+        userid: user.userid,
+      };
+      res.status(200).header("token", token).json({
         auth: true,
-        user,
+        userdata,
         token,
       });
     });

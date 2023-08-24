@@ -1,6 +1,6 @@
-module.exports = (sequelize, Sequelize) =>
-  sequelize.define("resturant", {
-    resturantid: {
+const Restaurant = (sequelize, Sequelize) =>
+  sequelize.define("restaurant", {
+    restaurantid: {
       type: Sequelize.INTEGER,
       autoIncrement: true,
       primaryKey: true,
@@ -10,7 +10,6 @@ module.exports = (sequelize, Sequelize) =>
     },
     email: {
       type: Sequelize.STRING,
-      unique: true,
     },
     phone: {
       type: Sequelize.STRING,
@@ -19,7 +18,8 @@ module.exports = (sequelize, Sequelize) =>
       type: Sequelize.STRING,
     },
     userid: {
-      type: Sequelize.STRING,
-      defaultValue: "user",
+      type: Sequelize.INTEGER,
     },
   });
+
+module.exports = Restaurant;

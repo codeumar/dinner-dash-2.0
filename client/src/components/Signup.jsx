@@ -14,7 +14,7 @@ const Signup = () => {
   const handleSignUp = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:3001/auth/signup", {
+      const res = await axios.post("http://localhost:3003/auth/signup", {
         name: name,
         phone: phone,
         email: email,

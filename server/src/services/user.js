@@ -6,7 +6,7 @@ const addUser = async (signupData) => {
 const loginUser = async (email) => {
   const user = await db.users.findOne({
     where: { email: email },
-    attributes: ["userid", "role", "password"],
+    attributes: ["userid", "role", "password", "email", "name", "phone"],
   });
 
   return user;

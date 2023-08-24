@@ -1,12 +1,40 @@
-import React, { useState } from "react";
-import { Form, Button, Container, Row, Col } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { Form, Button, Container } from "react-bootstrap";
+import axios from "axios";
 
 const AddProducts = () => {
   const [storeInfo, setStoreInfo] = useState({
     name: "",
     email: "",
-    userId: "",
+    restaurantId: "",
   });
+
+  const [restaurants, setRestaurants] = useState([]);
+
+  useEffect(() => {
+    fetchRestaurants();
+  }, []);
+
+  const fetchRestaurants = async () => {
+    const token = localStorage.getItem("token");
+    const user = JSON.parse(localStorage.getItem("user"));
+    console.log(user);
+    const headers = {
+      authorization: token,
+      CustomHeader: "custom-value",
+    };
+    console.log(token);
+    try {
+      const response = await axios.get(
+        `http://127.0.0.1:3003/restaurants/getallrestaurants/${user.userid}`,
+        { headers }
+      );
+      console.log(response);
+      setRestaurants(response.data);
+    } catch (error) {
+      console.error("Error fetching restaurants:", error);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,7 +50,7 @@ const AddProducts = () => {
     setStoreInfo({
       name: "",
       email: "",
-      userId: "",
+      restaurantId: "",
     });
   };
 
@@ -66,22 +94,30 @@ const AddProducts = () => {
           </div>
 
           <div className="mb-3">
-            <Form.Group controlId="storeUserId">
-              <Form.Label>User ID</Form.Label>
-              <Form.Control
-                type="text"
-                name="userId"
-                value={storeInfo.userId}
+            <Form.Group controlId="storeRestaurantId">
+              <Form.Label>Restaurant</Form.Label>
+              <Form.Select
+                name="restaurantId"
+                value={storeInfo.restaurantId}
                 onChange={handleChange}
                 required
-                placeholder="Enter the store user ID"
-              />
+              >
+                <option value="">Select a restaurant</option>
+                {restaurants.map((restaurant) => (
+                  <option
+                    key={restaurant.resturantid}
+                    value={restaurant.resturantid}
+                  >
+                    {restaurant.name}
+                  </option>
+                ))}
+              </Form.Select>
             </Form.Group>
           </div>
-
+          <input type="file" name="file" />
           <div className="text-center">
             <Button variant="primary" type="submit">
-              Create Store
+              Add Product
             </Button>
           </div>
         </Form>
