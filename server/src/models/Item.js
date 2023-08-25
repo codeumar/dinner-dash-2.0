@@ -24,4 +24,8 @@ module.exports = (sequelize, Sequelize) =>
       type: Sequelize.INTEGER,
       require: true,
     },
+    imageurl: {
+      type: Sequelize.STRING,
+      require: true,
+    },
   });

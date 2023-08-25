@@ -8,20 +8,28 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { CartProvider } from "./context/ContextReducer";
-import Cart from "./components/customer/Cart";
+
+import ItemDetails from "./components/customer/ItemDetails";
+import Footer from "./components/Footer";
 
 const App = () => {
   return (
-    <CartProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/auth" element={<Auth />} />
-          <Route path="/home/:id" element={<Dashboard />} />
-          <Route path="*" element={<Auth />} />
-        </Routes>
-      </BrowserRouter>
-    </CartProvider>
+    <>
+      <CartProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/items/:itemId" element={<ItemDetails />} />
+            <Route path="/auth" element={<Auth />} />
+            <Route path="/dashboard/:id" element={<Dashboard />} />
+            <Route path="*" element={<Auth />} />
+          </Routes>
+          <div>
+            <Footer />
+          </div>
+        </BrowserRouter>
+      </CartProvider>
+    </>
   );
 };
 

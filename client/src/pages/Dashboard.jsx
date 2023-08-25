@@ -11,6 +11,8 @@ const Dashboard = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user.role != "admin") navigate("/");
     if (token == null) {
       navigate("/");
     } else {

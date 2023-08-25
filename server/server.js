@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const port = 3003;
 const cors = require("cors");
+const expressfileupload = require("express-fileupload");
 
 const userRoute = require("./src/controllers/routes/user");
 const restaurantRouter = require("./src/controllers/routes/restaurant");
@@ -11,6 +12,7 @@ const orderRouter = require("./src/controllers/routes/order");
 
 app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 app.use(express.json());
+app.use(expressfileupload({ useTempFiles: true }));
 app.use(express.urlencoded({ extended: true }));
 
 //userRouter endpoints

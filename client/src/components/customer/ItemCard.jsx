@@ -5,9 +5,16 @@ import { useCart, useDispatchCart } from "../../context/ContextReducer";
 const ItemCard = (item) => {
   const data = useCart();
   const dispatch = useDispatchCart();
+  const [msg, setMessage] = useState("");
+  const [failureError, setfailureError] = useState("");
   const [quantity, setQuantity] = useState(1);
 
   const AddToCart = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("Please Login to add items to cart");
+      return;
+    }
     let existingItemIndex = -1;
     //  console.log(item.item.restaurantid);
     //
@@ -15,7 +22,7 @@ const ItemCard = (item) => {
       console.log(data[i]);
       console.log(item.item.restaurantid);
       if (data[i].restaurantid !== item.item.restaurantid) {
-        alert("You can't order from multiple restaurants at once!");
+        setfailureError("Cannot add items from different restaurants");
         return;
       }
     }
@@ -40,6 +47,7 @@ const ItemCard = (item) => {
           updatedItem: updatedItem,
         },
       });
+      setMessage("Item Updated");
     } else {
       await dispatch({
         type: "ADD",
@@ -47,10 +55,11 @@ const ItemCard = (item) => {
           restaurantid: item.item.restaurantid,
           itemid: item.item.itemid,
           itemname: item.item.name,
-          quantity: quantity,
+          quantity: Number(quantity),
           price: item.item.price * quantity,
         },
       });
+      setMessage("Item Added to Cart");
     }
   };
 
@@ -58,41 +67,58 @@ const ItemCard = (item) => {
     <div className="card m-2 mt-5">
       <img
         className="card-img-top"
-        src="https://img.freepik.com/free-photo/top-view-table-full-delicious-food-composition_23-2149141352.jpg?w=1380&t=st=1692793442~exp=1692794042~hmac=678d879738977573ef1a98fb63f268a2df7c2df7af726f7264f777ea418326a3"
+        src={item.item.imageurl}
         alt="Card image cap"
-        style={{ height: "120px", objectFit: "fill" }}
+        style={{ height: "300px", width: "100%", objectFit: "fill" }}
       />
       <div className="card-body">
         <h5 className="card-title">{item.item.name}</h5>
         <p className="card-text">{item.item.description}</p>
         <div className="container w-100">
-          <select
-            className="h-100 bg-success"
-            onChange={(e) => {
-              setQuantity(e.target.value);
-            }}
-          >
-            {Array.from(Array(item.item.quantity), (e, i) => {
-              return (
-                <>
-                  <option key={i + 1} value={i + 1}>
-                    {i + 1}
-                  </option>
-                </>
-              );
-            })}
-          </select>
+          {item.item.quantity == 0 ? (
+            <p className="text-danger"></p>
+          ) : (
+            <select
+              className="h-100 bg-success"
+              onChange={(e) => {
+                setQuantity(e.target.value);
+              }}
+            >
+              {Array.from(Array(item.item.quantity), (e, i) => {
+                return (
+                  <>
+                    <option key={i + 1} value={i + 1}>
+                      {i + 1}
+                    </option>
+                  </>
+                );
+              })}
+            </select>
+          )}
           <div className="d-inline h-100 fs-5">
-            Total Price: {quantity * item.item.price}
+            Price $: {quantity * item.item.price}
           </div>
         </div>
         <hr></hr>
+
+        {item.item.quantity == 0 ? (
+          <p className="text-danger">Out of Stock</p>
+        ) : (
+          <Link
+            onClick={AddToCart}
+            className="btn btn-success justify-center mx-1"
+          >
+            Add to Cart
+          </Link>
+        )}
         <Link
-          onClick={AddToCart}
+          to={`/items/${item.item.itemid}`}
           className="btn btn-success justify-center mx-1"
         >
-          Add to Cart
+          View Details
         </Link>
+        {msg && <p className="text-success">{msg}</p>}
+        {failureError && <p className="text-danger">{failureError}</p>}
       </div>
     </div>
   );
