@@ -21,6 +21,7 @@ const AdminNavbar = ({ onStoreClick, onProductClick, onHomeClick }) => {
         localStorage.removeItem("user");
         navigate("/");
       } else {
+        console.log("Error");
       }
     } catch (error) {
       if (error) {

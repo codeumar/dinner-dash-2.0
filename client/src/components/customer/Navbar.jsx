@@ -1,12 +1,15 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Badge from "react-bootstrap/Badge";
 import CartModal from "../../Modals/CartModal";
 import Cart from "../customer/Cart";
 import { useCart } from "../../context/ContextReducer";
+import axios from "axios";
 
 const Navbar = () => {
   const cartData = useCart();
+
+  const navigate = useNavigate();
   const [cartView, setCartView] = useState(false);
   const logout = async (e) => {
     const token = localStorage.getItem("token");
@@ -23,7 +26,7 @@ const Navbar = () => {
         console.log("Logout successful:");
         localStorage.removeItem("token");
         localStorage.removeItem("user");
-        navigate("-1");
+        navigate("/");
       } else {
       }
     } catch (error) {
@@ -40,9 +43,7 @@ const Navbar = () => {
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-dark bg-success ps-5 ">
-        <Link className="navbar-brand" to="#">
-          Dinner Dash 2.0
-        </Link>
+        <Link className="navbar-brand">Dinner Dash 2.0</Link>
         <button
           className="navbar-toggler"
           type="button"
@@ -57,7 +58,7 @@ const Navbar = () => {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav me-auto ma-2">
             <li className="nav-item active">
-              <Link className="nav-link active fs-4" to="#">
+              <Link className="nav-link active fs-4" to="/">
                 Home
               </Link>
             </li>
@@ -73,10 +74,8 @@ const Navbar = () => {
           </ul>
           {!localStorage.getItem("token") ? (
             <div className="d-flex ">
-              <Link className="btn bg-white text-success mx-1 ">Login</Link>
-
-              <Link className="btn bg-white text-success mx-1" to="#">
-                Sign Up
+              <Link to="/auth" className="btn bg-white text-success mx-1 ">
+                Login/Signup
               </Link>
             </div>
           ) : (

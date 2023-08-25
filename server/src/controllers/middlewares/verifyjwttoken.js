@@ -8,7 +8,7 @@ const verifyUser = async (req, res, next) => {
     } else {
       jwt.verify(token, "umar", (err, user) => {
         if (err) {
-          res.status(401).json({ auth: false, message: "Error" });
+          res.status(401).json({ auth: false, message: "Token Expired" });
         } else {
           req.id = user.id;
           next();

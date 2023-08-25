@@ -7,10 +7,8 @@ const { createOrder } = require("../../services/order");
 
 orderRouter.post("/create", async (req, res) => {
   try {
-    // console.log(req.body);
     const { restaurantid, userid, items, totalprice, status } = req.body;
-    //console.log(items);
-    //console.log(restaurantid, userid, items, totalprice, status);
+
     const sendDataToDb = await createOrder({
       restaurantid: restaurantid,
       userid: userid,

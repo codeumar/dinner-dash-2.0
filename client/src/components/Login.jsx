@@ -12,21 +12,27 @@ const Login = () => {
     e.preventDefault();
     try {
       await axios
-        .post("http://127.0.0.1:3003/auth/login", {
-          email,
-          password,
-        })
+        .post(
+          "http://127.0.0.1:3003/auth/login",
+          {
+            email,
+            password,
+          },
+          {
+            withCredentials: true,
+          }
+        )
         .then((res) => {
           if (res.data.auth == false) {
             setError("Not user found");
             return;
           }
           if (res.status === 200) {
-            console.log("Login successful:", res.data);
-            console.log("Body: ", res.data);
             localStorage.setItem("token", res.data.token);
             localStorage.setItem("user", JSON.stringify(res.data.userdata));
-            navigate(`/home/${res.data.userdata.userid}`);
+            if (res.data.userdata.role == "user") navigate("/");
+            if (res.data.userdata.role == "admin")
+              navigate(`/dashboard/${res.data.userdata.userid}`);
           } else {
             setError("Incorrect password");
           }

@@ -32,12 +32,16 @@ const Restaurants = () => {
 
   return (
     <Container>
-      <h1 className="my-4">Restaurant List</h1>
+      <h1 className="my-4">Restaurant List {restaurants.length}</h1>
+      <h3 className="my-4">Total: {restaurants.length}</h3>
       <Row>
         {restaurants.map((restaurant) => (
           <Col key={restaurant.restaurantid} md={12} className="mb-4">
             <Card className="h-100 shadow-sm">
               <Card.Body>
+                <Card.Text>
+                  <strong>Restaurant No#: </strong> {restaurant.restaurantid}
+                </Card.Text>
                 <Card.Title>Name: {restaurant.name}</Card.Title>
                 <Card.Subtitle className="mb-2 text-muted">
                   Email: {restaurant.email}

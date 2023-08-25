@@ -1,5 +1,4 @@
 const express = require("express");
-const passport = require("passport");
 const { addUser, loginUser } = require("../../services/user");
 const jwt = require("jsonwebtoken");
 const verifyUser = require("../middlewares/verifyjwttoken");
@@ -7,7 +6,6 @@ const verifyUser = require("../middlewares/verifyjwttoken");
 const userRoute = express.Router();
 
 // passport.authenticate("local"),
-
 userRoute.post("/login", async (req, res) => {
   const user = await loginUser(req.body.email);
 
@@ -31,19 +29,26 @@ userRoute.post("/login", async (req, res) => {
           message: "Error in loging in Please try again",
           token: null,
         });
+      } else {
+        const userdata = {
+          name: user.name,
+          email: user.email,
+          role: user.role,
+          phone: user.phone,
+          userid: user.userid,
+        };
+
+        res.cookie("jwttoken", token, {
+          expires: new Date(Date.now() + 900000000),
+          httpOnly: true,
+          sameSite: true,
+        });
+        res.status(200).header("token", token).json({
+          auth: true,
+          userdata,
+          token,
+        });
       }
-      const userdata = {
-        name: user.name,
-        email: user.email,
-        role: user.role,
-        phone: user.phone,
-        userid: user.userid,
-      };
-      res.status(200).header("token", token).json({
-        auth: true,
-        userdata,
-        token,
-      });
     });
   }
 });
@@ -97,6 +102,10 @@ userRoute.get("/getuserbyid", async (req, res) => {
 userRoute.post("/logout", verifyUser, async (req, res) => {
   console.log("User Loged out");
   res.status(200).json({ auth: false, message: "Logged Out" });
+});
+
+userRoute.post("/verifyuser", verifyUser, async (req, res) => {
+  res.status(200).json({ auth: true, message: "User Verified" });
 });
 
 module.exports = userRoute;

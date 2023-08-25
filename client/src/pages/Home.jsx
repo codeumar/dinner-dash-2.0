@@ -2,13 +2,25 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../components/customer/Navbar";
 
 import ItemCard from "../components/customer/ItemCard";
-import Footer from "../components/Footer";
-import Carousel from "../components/customer/Carousel";
+
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user != null && user.role != "user")
+      navigate(`/dashboard/${user.userid}`);
+    if (token == null) {
+      navigate("/");
+    } else {
+    }
+  }, []);
   const [items, setItems] = useState([]);
   const [searchitem, setSearch] = useState("");
+
   const getAllItems = async () => {
     const allitems = await axios.get("http://127.0.0.1:3003/items/getallitems");
     setItems(allitems.data);
@@ -26,7 +38,6 @@ const Home = () => {
         <Navbar />
       </div>
       <div
-        id="carouselExampleFade"
         className="carousel slide"
         data-ride="carousel"
         style={{ objectFit: "contain !important" }}
@@ -102,9 +113,6 @@ const Home = () => {
             </div>
           ))}
         </div>
-      </div>
-      <div>
-        <Footer />
       </div>
     </>
   );
