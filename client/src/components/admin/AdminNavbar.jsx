@@ -2,7 +2,12 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const AdminNavbar = ({ onStoreClick, onProductClick, onHomeClick }) => {
+const AdminNavbar = ({
+  onStoreClick,
+  onProductClick,
+  onHomeClick,
+  onOrdersClick,
+}) => {
   const navigate = useNavigate();
   const logout = async (e) => {
     const token = localStorage.getItem("token");
@@ -79,9 +84,12 @@ const AdminNavbar = ({ onStoreClick, onProductClick, onHomeClick }) => {
               </button>
             </li>
             <li className="nav-item">
-              <Link className="btn bg-white text-success mx-1" to="#">
-                Profile
-              </Link>
+              <button
+                onClick={onOrdersClick}
+                className="btn bg-white text-success mx-1"
+              >
+                Orders
+              </button>
             </li>
             <li className="nav-item">
               <Link

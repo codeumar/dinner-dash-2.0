@@ -51,18 +51,7 @@ const Restaurants = () => {
                   <strong>Phone: </strong> {restaurant.phone}
                 </Card.Text>
               </Card.Body>
-              <Card.Footer className="bg-white border-top-0 text-center">
-                <Button variant="primary" className="mx-2">
-                  Edit
-                </Button>
-                <Button
-                  variant="danger"
-                  className="mx-2"
-                  //  onClick={() => handleDelete(restaurant.restaurantid)}
-                >
-                  Delete
-                </Button>
-              </Card.Footer>
+              <Card.Footer className="bg-white border-top-0 text-center"></Card.Footer>
             </Card>
           </Col>
         ))}

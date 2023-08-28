@@ -3,7 +3,12 @@ const express = require("express");
 const orderRouter = express.Router();
 const createOrderItem = require("../../services/orderitem");
 const verifyUser = require("../middlewares/verifyjwttoken");
-const { createOrder } = require("../../services/order");
+const {
+  createOrder,
+  getOrdersByUserId,
+  updateOrder,
+  getOrdersByOrderId,
+} = require("../../services/order");
 
 orderRouter.post("/create", async (req, res) => {
   try {
@@ -31,6 +36,74 @@ orderRouter.post("/create", async (req, res) => {
       data: { order: "complete", orderItems: "ii" },
     });
   } catch (error) {}
+});
+
+//write a route to get all orders of a user
+orderRouter.get("/getall/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const orders = await getOrdersByUserId(id);
+    console.log(orders);
+    res.status(200).json({
+      message: "Orders fetched successfully",
+      data: orders,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error in fetching orders",
+      data: error,
+    });
+  }
+});
+orderRouter.get("/getallbyuserid/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const orders = await getOrdersByUserId(id);
+    console.log(orders);
+    res.status(200).json({
+      message: "Orders fetched successfully",
+      data: orders,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error in fetching orders",
+      data: error,
+    });
+  }
+});
+orderRouter.get("/items/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const orders = await getOrdersByOrderId(id);
+    console.log(orders);
+    res.status(200).json({
+      message: "Orders fetched successfully",
+      data: orders,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error in fetching orders",
+      data: error,
+    });
+  }
+});
+
+//write a route to updated order
+orderRouter.put("/update/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+    const order = await updateOrder(id, status);
+    res.status(200).json({
+      message: "Order updated successfully",
+      data: order,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error in updating order",
+      data: error,
+    });
+  }
 });
 
 module.exports = orderRouter;

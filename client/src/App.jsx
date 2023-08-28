@@ -11,6 +11,7 @@ import { CartProvider } from "./context/ContextReducer";
 
 import ItemDetails from "./components/customer/ItemDetails";
 import Footer from "./components/Footer";
+import ViewItemInOrder from "./components/admin/ViewItemInOrder";
 
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
             <Route path="/items/:itemId" element={<ItemDetails />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/dashboard/:id" element={<Dashboard />} />
+            <Route path="/viewItem/:itemId" element={<ViewItemInOrder />} />
             <Route path="*" element={<Auth />} />
           </Routes>
           <div>
