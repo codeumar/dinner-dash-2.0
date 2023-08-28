@@ -29,6 +29,15 @@ restaurantRouter.get("/getallrestaurants", verifyUser, async (req, res) => {
     res.status(200).send(error);
   }
 });
+restaurantRouter.get("/getallrestaurantsforfilter", async (req, res) => {
+  try {
+    const restaurant = await getAllRestaurants();
+    res.status(200).send(restaurant);
+  } catch (error) {
+    console.log(error);
+    res.status(200).send(error);
+  }
+});
 restaurantRouter.get("/getallrestaurants/:id", verifyUser, async (req, res) => {
   try {
     const id = req.params.id;

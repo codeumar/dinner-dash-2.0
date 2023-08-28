@@ -14,7 +14,7 @@ const loginUser = async (email) => {
 const findUserById = async (userid) => {
   const user = await db.users.findOne({
     where: { userid: userid },
-    attributes: ["userid", "role", "password"],
+    attributes: ["userid", "role", "password", "name", "email", "phone"],
   });
   return user;
 };

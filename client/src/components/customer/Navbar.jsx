@@ -6,7 +6,7 @@ import Cart from "../customer/Cart";
 import { useCart } from "../../context/ContextReducer";
 import axios from "axios";
 
-const Navbar = () => {
+const Navbar = ({ onHomeClick, onOrdersClick }) => {
   const cartData = useCart();
 
   const navigate = useNavigate();
@@ -26,6 +26,7 @@ const Navbar = () => {
         console.log("Logout successful:");
         localStorage.removeItem("token");
         localStorage.removeItem("user");
+        onHomeClick();
         navigate("/");
       } else {
       }
@@ -58,22 +59,25 @@ const Navbar = () => {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav me-auto ma-2">
             <li className="nav-item active">
-              <Link className="nav-link active fs-4" to="/">
+              <button className="nav-link active fs-4" onClick={onHomeClick}>
                 Home
-              </Link>
+              </button>
             </li>
             {localStorage.getItem("token") ? (
               <li className="nav-item active">
-                <Link className="nav-link active fs-4" to="#">
+                <button
+                  className="nav-link active fs-4"
+                  onClick={onOrdersClick}
+                >
                   My Orers
-                </Link>
+                </button>
               </li>
             ) : (
               ""
             )}
           </ul>
           {!localStorage.getItem("token") ? (
-            <div className="d-flex ">
+            <div className="d-flex  mr-5">
               <Link to="/auth" className="btn bg-white text-success mx-1 ">
                 Login/Signup
               </Link>
@@ -102,7 +106,7 @@ const Navbar = () => {
               ) : (
                 ""
               )}
-              <div onClick={logout} className="btn bg-white text-success mx-1">
+              <div onClick={logout} className="btn bg-white text-success mr-5">
                 Logout
               </div>
             </>

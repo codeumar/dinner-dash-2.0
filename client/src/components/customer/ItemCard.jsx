@@ -1,28 +1,42 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useCart, useDispatchCart } from "../../context/ContextReducer";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
 const ItemCard = (item) => {
   const data = useCart();
   const dispatch = useDispatchCart();
-  const [msg, setMessage] = useState("");
-  const [failureError, setfailureError] = useState("");
   const [quantity, setQuantity] = useState(1);
-
   const AddToCart = async () => {
     const token = localStorage.getItem("token");
     if (!token) {
-      alert("Please Login to add items to cart");
+      toast.error("Please Login to add items to cart", {
+        position: "top-right",
+        autoClose: 3000, // Auto close after 3000ms (3 seconds)
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       return;
     }
     let existingItemIndex = -1;
-    //  console.log(item.item.restaurantid);
+
     //
     for (let i = 0; i < data.length; i++) {
-      console.log(data[i]);
-      console.log(item.item.restaurantid);
       if (data[i].restaurantid !== item.item.restaurantid) {
-        setfailureError("Cannot add items from different restaurants");
+        toast.error("Cannot add items from different restaurants", {
+          position: "top-right",
+          autoClose: 3000, // Auto close after 3000ms (3 seconds)
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
         return;
       }
     }
@@ -47,7 +61,15 @@ const ItemCard = (item) => {
           updatedItem: updatedItem,
         },
       });
-      setMessage("Item Updated");
+      toast.success("Item Updated", {
+        position: "top-right",
+        autoClose: 3000, // Auto close after 3000ms (3 seconds)
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     } else {
       await dispatch({
         type: "ADD",
@@ -59,68 +81,81 @@ const ItemCard = (item) => {
           price: item.item.price * quantity,
         },
       });
-      setMessage("Item Added to Cart");
+
+      toast.success("Item Added to Cart", {
+        position: "top-right",
+        autoClose: 3000, // Auto close after 3000ms (3 seconds)
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     }
   };
 
   return (
-    <div className="card m-2 mt-5">
-      <img
-        className="card-img-top"
-        src={item.item.imageurl}
-        alt="Card image cap"
-        style={{ height: "300px", width: "100%", objectFit: "fill" }}
-      />
-      <div className="card-body">
-        <h5 className="card-title">{item.item.name}</h5>
-        <p className="card-text">{item.item.description}</p>
-        <div className="container w-100">
-          {item.item.quantity == 0 ? (
-            <p className="text-danger"></p>
-          ) : (
-            <select
-              className="h-100 bg-success"
-              onChange={(e) => {
-                setQuantity(e.target.value);
-              }}
-            >
-              {Array.from(Array(item.item.quantity), (e, i) => {
-                return (
-                  <>
-                    <option key={i + 1} value={i + 1}>
-                      {i + 1}
-                    </option>
-                  </>
-                );
-              })}
-            </select>
-          )}
-          <div className="d-inline h-100 fs-5">
-            Price $: {quantity * item.item.price}
+    <>
+      <ToastContainer />
+      <div
+        className="card m-1 mt-4"
+        style={{ width: "25rem", height: "500px" }}
+      >
+        <img
+          className="card-img-top"
+          src={item.item.imageurl}
+          alt="Card image cap"
+          style={{ height: "200px", width: "100%", objectFit: "fill" }}
+        />
+        <div className="card-body">
+          <h5 className="card-title">{item.item.name}</h5>
+          <p className="card-text">{item.item.description}</p>
+          <div className="container w-100">
+            {item.item.quantity == 0 ? (
+              <p className="text-danger"></p>
+            ) : (
+              <select
+                className="h-100 bg-success"
+                onChange={(e) => {
+                  setQuantity(e.target.value);
+                }}
+              >
+                {Array.from(Array(item.item.quantity), (e, i) => {
+                  return (
+                    <>
+                      <option key={i + 1} value={i + 1}>
+                        {i + 1}
+                      </option>
+                    </>
+                  );
+                })}
+              </select>
+            )}
+            <div className="d-inline h-100 fs-5">
+              Price $: {quantity * item.item.price}
+            </div>
           </div>
-        </div>
-        <hr></hr>
+          <hr></hr>
 
-        {item.item.quantity == 0 ? (
-          <p className="text-danger">Out of Stock</p>
-        ) : (
+          {item.item.quantity == 0 ? (
+            <p className="text-danger">Out of Stock</p>
+          ) : (
+            <Link
+              onClick={AddToCart}
+              className="btn btn-success justify-center mx-1"
+            >
+              Add to Cart
+            </Link>
+          )}
           <Link
-            onClick={AddToCart}
+            to={`/items/${item.item.itemid}`}
             className="btn btn-success justify-center mx-1"
           >
-            Add to Cart
+            View Details
           </Link>
-        )}
-        <Link
-          to={`/items/${item.item.itemid}`}
-          className="btn btn-success justify-center mx-1"
-        >
-          View Details
-        </Link>
-        {msg && <p className="text-success">{msg}</p>}
-        {failureError && <p className="text-danger">{failureError}</p>}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -42,7 +42,7 @@ const Cart = () => {
     } catch (error) {
       console.error("Error placing order:", error);
     } finally {
-      setIsLoading(false); // Stop loading
+      setIsLoading(false);
     }
   };
 

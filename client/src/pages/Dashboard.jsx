@@ -4,6 +4,7 @@ import AdminNavbar from "../components/admin/AdminNavbar";
 import Restaurants from "../components/admin/Restaurants";
 import CreateStore from "../components/admin/CreateStore";
 import AddProducts from "../components/admin/AddProducts";
+import OrderPage from "../components/admin/OrderPage";
 const Dashboard = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -24,23 +25,33 @@ const Dashboard = () => {
   const [showcreatestore, setShowCreateStoreForm] = useState(false);
   const [showaddproduct, setShowAddProductForm] = useState(false);
   const [showproductpage, setProductPage] = useState(true);
+  const [showorderspage, setOrdersPage] = useState(false);
 
   return (
     <>
       <div className="container-fluid">
         <AdminNavbar
           onStoreClick={() => {
+            setOrdersPage(false);
             setShowCreateStoreForm(true);
             setShowAddProductForm(false);
             setProductPage(false);
           }}
           onProductClick={() => {
-            setShowCreateStoreForm(false);
+            setOrdersPage(false);
             setShowAddProductForm(true);
+            setShowCreateStoreForm(false);
             setProductPage(false);
           }}
           onHomeClick={() => {
+            setOrdersPage(false);
             setProductPage(true);
+            setShowCreateStoreForm(false);
+            setShowAddProductForm(false);
+          }}
+          onOrdersClick={() => {
+            setOrdersPage(true);
+            setProductPage(false);
             setShowCreateStoreForm(false);
             setShowAddProductForm(false);
           }}
@@ -49,16 +60,22 @@ const Dashboard = () => {
       <div className="username-box">
         <h1 className="username-display">Welcome {username}</h1>
       </div>
-      <div className="container d-flex">
-        <div className="container h-50 w-50">
-          <img className="image" src="../public/restaurant.jpg" alt="" />
+      {showorderspage ? (
+        <OrderPage />
+      ) : (
+        <div>
+          <div className="container d-flex">
+            <div className="container h-50 w-50">
+              <img className="image" src="../public/restaurant.jpg" alt="" />
+            </div>
+            <div className="container h-50 w-50">
+              {showproductpage && <Restaurants />}
+              {showcreatestore && <CreateStore id={id} />}
+              {showaddproduct && <AddProducts />}
+            </div>
+          </div>
         </div>
-        <div className="container h-50 w-50">
-          {showproductpage && <Restaurants />}
-          {showcreatestore && <CreateStore id={id} />}
-          {showaddproduct && <AddProducts />}
-        </div>
-      </div>
+      )}
     </>
   );
 };

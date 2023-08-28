@@ -1,7 +1,7 @@
-const express = require("express");
-const { addUser, loginUser } = require("../../services/user");
+const { addUser, loginUser, findUserById } = require("../../services/user");
 const jwt = require("jsonwebtoken");
 const verifyUser = require("../middlewares/verifyjwttoken");
+const express = require("express");
 
 const userRoute = express.Router();
 
@@ -96,6 +96,15 @@ userRoute.get("/getuserbyid", async (req, res) => {
     res.status(200).json(addeddata);
   } catch (error) {
     s;
+    res.status(500).send(error.msg);
+  }
+});
+userRoute.get("/getuserbyid/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const addeddata = await findUserById(id);
+    res.status(200).json(addeddata);
+  } catch (error) {
     res.status(500).send(error.msg);
   }
 });
