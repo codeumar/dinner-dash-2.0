@@ -17,7 +17,7 @@ const OrderPage = () => {
   useEffect(() => {
     fetchRestaurants();
     fetchOrders();
-  }, []);
+  }, [selectedRestaurantId]);
 
   const fetchRestaurants = async () => {
     const token = localStorage.getItem("token");

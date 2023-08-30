@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Card, Container, Row, Col, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const Restaurants = () => {
   const [restaurants, setRestaurants] = useState([]);
@@ -47,11 +48,16 @@ const Restaurants = () => {
                   Email: {restaurant.email}
                 </Card.Subtitle>
                 <Card.Text>Address: {restaurant.address}</Card.Text>
-                <Card.Text>
-                  <strong>Phone: </strong> {restaurant.phone}
-                </Card.Text>
+                <strong>Phone: </strong> {restaurant.phone}
+                <br />
+                <Link
+                  to={`/restaurant/${restaurant.restaurantid}`}
+                  className="btn btn-primary"
+                >
+                  View Products
+                </Link>
               </Card.Body>
-              <Card.Footer className="bg-white border-top-0 text-center"></Card.Footer>
+              {/* Rest of your card content */}
             </Card>
           </Col>
         ))}

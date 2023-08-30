@@ -5,6 +5,8 @@ import axios from "axios";
 const AddProducts = () => {
   const [successMsg, setSuccessMessage] = useState("");
   const [errorMsg, setErrorMessage] = useState("");
+  const [selectedCategories, setSelectedCategories] = useState([]);
+
   const [productInfo, setProductInfo] = useState({
     name: "",
     description: "",
@@ -14,7 +16,18 @@ const AddProducts = () => {
   });
   const img = useRef();
   const [restaurants, setRestaurants] = useState([]);
-
+  const [categories, setCategories] = useState([]);
+  const fetchAllCategories = async () => {
+    try {
+      const response = await axios.get(
+        `http://127.0.0.1:3003/category/getallcategory`
+      );
+      console.log(response);
+      setCategories(response.data);
+    } catch (error) {
+      console.error("Error fetching restaurants:", error);
+    }
+  };
   const fetchRestaurants = async () => {
     const token = localStorage.getItem("token");
     const user = JSON.parse(localStorage.getItem("user"));
@@ -37,6 +50,7 @@ const AddProducts = () => {
   };
   useEffect(() => {
     fetchRestaurants();
+    fetchAllCategories();
   }, []);
 
   const handleChange = (e) => {
@@ -71,6 +85,9 @@ const AddProducts = () => {
 
       formData.append("restaurantid", productInfo.restaurantId);
       formData.append("img", img.current.files[0]);
+      selectedCategories.forEach((categoryName) => {
+        formData.append("categories", categoryName);
+      });
       const token = localStorage.getItem("token");
       console.log(formData);
       const headers = {
@@ -84,10 +101,25 @@ const AddProducts = () => {
         })
         .then((res) => {
           setSuccessMessage("Item Added Successfully");
+          setErrorMessage("");
         });
     } catch (error) {
       setErrorMessage("Item Adding Failed");
+      setSuccessMessage("");
     }
+  };
+  const handleCategoryChange = (e, categoryName) => {
+    let updatedSelectedCategories = [...selectedCategories];
+
+    if (e.target.checked) {
+      updatedSelectedCategories.push(categoryName);
+    } else {
+      updatedSelectedCategories = updatedSelectedCategories.filter(
+        (cat) => cat != categoryName
+      );
+    }
+
+    setSelectedCategories(updatedSelectedCategories);
   };
 
   return (
@@ -176,6 +208,21 @@ const AddProducts = () => {
               </Form.Select>
             </Form.Group>
           </div>
+          <div className="mb-3">
+            <Form.Group controlId="storeCategories">
+              <Form.Label>Categories</Form.Label>
+              {categories.map((cate) => (
+                <Form.Check
+                  key={cate.id}
+                  type="checkbox"
+                  label={cate.name}
+                  value={cate.id}
+                  onChange={(e) => handleCategoryChange(e, cate.id)}
+                />
+              ))}
+            </Form.Group>
+          </div>
+
           <input type="file" ref={img} name="file" />
           {successMsg && (
             <div>

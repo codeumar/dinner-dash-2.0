@@ -26,7 +26,7 @@ const Navbar = ({ onHomeClick, onOrdersClick }) => {
         console.log("Logout successful:");
         localStorage.removeItem("token");
         localStorage.removeItem("user");
-        onHomeClick();
+        //onHomeClick();
         navigate("/");
       } else {
       }

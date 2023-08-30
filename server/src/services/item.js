@@ -1,4 +1,3 @@
-const { where } = require("sequelize");
 const db = require("../models");
 
 const additem = async (itemdata) => {
@@ -23,4 +22,17 @@ const getItemById = async (id) => {
   }
 };
 
-module.exports = { additem, getAllFoodItems, getItemById };
+const getItemByrestaurantId = async (id) => {
+  try {
+    return await db.item.findAll({ where: { restaurantid: id } });
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+module.exports = {
+  additem,
+  getAllFoodItems,
+  getItemById,
+  getItemByrestaurantId,
+};

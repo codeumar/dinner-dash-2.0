@@ -10,6 +10,7 @@ const restaurantRouter = require("./src/controllers/routes/restaurant");
 const itemRouter = require("./src/controllers/routes/item");
 const orderRouter = require("./src/controllers/routes/order");
 const cartRouter = require("./src/controllers/routes/cart");
+const categoryRouter = require("./src/controllers/routes/category");
 
 app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 app.use(express.json());
@@ -23,6 +24,7 @@ app.use("/restaurants", restaurantRouter);
 app.use("/items", itemRouter);
 app.use("/order", orderRouter);
 app.use("/cart", cartRouter);
+app.use("/category", categoryRouter);
 
 app.listen(port, () => {
   console.log(`Server started at Port: ${port}`);

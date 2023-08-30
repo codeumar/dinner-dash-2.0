@@ -5,6 +5,7 @@ import ItemCard from "../components/customer/ItemCard";
 
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import AllOrder from "../components/customer/AllOrders";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ const Home = () => {
     }
   }, []);
   const [items, setItems] = useState([]);
-  const [searchitem, setSearch] = useState("");
+
   const [selectedRestaurant, setSelectedRestaurant] = useState(null);
 
   const getAllItems = async () => {
@@ -31,21 +32,22 @@ const Home = () => {
     getAllRestaurants();
   }, []);
   const filteredItems = items.filter((item) => {
-    const itemName = item.name || "";
-    console.log(item.restaurantid);
-    console.log(selectedRestaurant);
-    return (
-      itemName.toLowerCase().includes(searchitem.toLowerCase()) &&
-      (selectedRestaurant ? item.restaurantid == selectedRestaurant : true) // Compare restaurantId
-    );
+    return selectedRestaurant ? item.restaurantid == selectedRestaurant : true;
   });
   const [restaurants, setRestaurants] = useState([]); //
   const getAllRestaurants = async () => {
     const allRestaurants = await axios.get(
       "http://127.0.0.1:3003/restaurants/getallrestaurantsforfilter"
-    ); // Replace with your API endpoint
+    );
 
     setRestaurants(allRestaurants.data);
+  };
+  const getRestaurantItems = async (restaurantId) => {
+    const response = await axios.get(
+      `http://127.0.0.1:3003/items/getallitemsbyrestaurantid/${restaurantId}`
+    );
+
+    setItems(response.data);
   };
 
   const [showHomepage, setHomePage] = useState(true);
@@ -123,34 +125,27 @@ const Home = () => {
               <span className="sr-only">Next</span>
             </a>
           </div>
-          <div className="container-fluid m-5 justify-content-around h-50 w-100">
-            <form class="form-inline my-2 my-lg-0">
-              <input
-                class="form-control mr-sm-2"
-                type="search"
-                value={searchitem}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search"
-                aria-label="Search"
-              />
-              <select
-                className="form-control"
-                value={selectedRestaurant}
-                onChange={(e) => setSelectedRestaurant(e.target.value)}
-              >
-                <option value="">All Restaurants</option>
-                {restaurants.map((restaurant) => (
-                  <option
-                    key={restaurant.restaurantid}
-                    value={restaurant.restaurantid}
-                  >
-                    {restaurant.name}
-                  </option>
-                ))}
-              </select>
-            </form>
+          <div className="container m-5 flex flex-row justify-content-around ">
+            <select
+              className="form-control"
+              value={selectedRestaurant}
+              onChange={(e) => {
+                setSelectedRestaurant(e.target.value);
+                getRestaurantItems(e.target.value);
+              }}
+            >
+              <option value="">All Restaurants</option>
+              {restaurants.map((restaurant) => (
+                <option
+                  key={restaurant.restaurantid}
+                  value={restaurant.restaurantid}
+                >
+                  {restaurant.name}
+                </option>
+              ))}
+            </select>
           </div>
-          <div className="container-fluid">
+          <div className="container">
             <div className="row">
               {filteredItems.length === 0 ? (
                 <>
@@ -166,11 +161,13 @@ const Home = () => {
                   </div>
                 </>
               ) : (
-                filteredItems.map((item) => (
-                  <div className="col col-sm-3" key={item.id}>
-                    <ItemCard item={item} />
-                  </div>
-                ))
+                <div className="row row-cols-1 row-cols-md-3 g-6">
+                  {filteredItems.map((item) => (
+                    <div className="col" key={item.id}>
+                      <ItemCard item={item} />
+                    </div>
+                  ))}
+                </div>
               )}
             </div>
           </div>

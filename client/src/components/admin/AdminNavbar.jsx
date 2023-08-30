@@ -7,6 +7,7 @@ const AdminNavbar = ({
   onProductClick,
   onHomeClick,
   onOrdersClick,
+  togglerValue,
 }) => {
   const navigate = useNavigate();
   const logout = async (e) => {
@@ -60,37 +61,42 @@ const AdminNavbar = ({
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav">
             <li className="nav-item active">
-              <button
+              <Link
                 onClick={onHomeClick}
                 className="btn bg-white text-success mx-1"
+                to="/"
               >
                 Home
-              </button>
+              </Link>
             </li>
-            <li className="nav-item active">
-              <button
-                onClick={onStoreClick}
-                className="btn bg-white text-success mx-1"
-              >
-                Create Store
-              </button>
-            </li>
-            <li className="nav-item">
-              <button
-                onClick={onProductClick}
-                className="btn bg-white text-success mx-1"
-              >
-                Add Product
-              </button>
-            </li>
-            <li className="nav-item">
-              <button
-                onClick={onOrdersClick}
-                className="btn bg-white text-success mx-1"
-              >
-                Orders
-              </button>
-            </li>
+            {togglerValue ? (
+              <>
+                <li className="nav-item active">
+                  <button
+                    onClick={onStoreClick}
+                    className="btn bg-white text-success mx-1"
+                  >
+                    Create Store
+                  </button>
+                </li>
+                <li className="nav-item">
+                  <button
+                    onClick={onProductClick}
+                    className="btn bg-white text-success mx-1"
+                  >
+                    Add Product
+                  </button>
+                </li>
+                <li className="nav-item">
+                  <button
+                    onClick={onOrdersClick}
+                    className="btn bg-white text-success mx-1"
+                  >
+                    Orders
+                  </button>
+                </li>
+              </>
+            ) : null}
             <li className="nav-item">
               <Link
                 onClick={logout}

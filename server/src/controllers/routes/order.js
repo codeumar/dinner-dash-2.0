@@ -1,7 +1,10 @@
 const jwt = require("jsonwebtoken");
 const express = require("express");
 const orderRouter = express.Router();
-const createOrderItem = require("../../services/orderitem");
+const {
+  createOrderItem,
+  removeOrderedItemQuantity,
+} = require("../../services/orderitem");
 const verifyUser = require("../middlewares/verifyjwttoken");
 const {
   createOrder,
@@ -27,6 +30,10 @@ orderRouter.post("/create", async (req, res) => {
         orderid: orderId,
         itemid: item.itemid,
         price: item.price,
+        quantity: item.quantity,
+      });
+      await removeOrderedItemQuantity({
+        itemid: item.itemid,
         quantity: item.quantity,
       });
     });

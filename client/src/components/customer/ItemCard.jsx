@@ -6,6 +6,9 @@ import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 
 const ItemCard = (item) => {
+  const storedUser = JSON.parse(localStorage.getItem("user")) || {};
+  const userId = storedUser.userid || "";
+
   const data = useCart();
   const dispatch = useDispatchCart();
   const [quantity, setQuantity] = useState(1);
@@ -30,7 +33,7 @@ const ItemCard = (item) => {
       if (data[i].restaurantid !== item.item.restaurantid) {
         toast.error("Cannot add items from different restaurants", {
           position: "top-right",
-          autoClose: 3000, // Auto close after 3000ms (3 seconds)
+          autoClose: 3000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -97,10 +100,7 @@ const ItemCard = (item) => {
   return (
     <>
       <ToastContainer />
-      <div
-        className="card m-1 mt-4"
-        style={{ width: "25rem", height: "500px" }}
-      >
+      <div className="card">
         <img
           className="card-img-top"
           src={item.item.imageurl}

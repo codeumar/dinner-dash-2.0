@@ -5,7 +5,6 @@ const express = require("express");
 
 const userRoute = express.Router();
 
-// passport.authenticate("local"),
 userRoute.post("/login", async (req, res) => {
   const user = await loginUser(req.body.email);
 

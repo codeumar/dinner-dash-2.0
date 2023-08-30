@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useCart, useDispatchCart } from "../../context/ContextReducer";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
   let data = useCart();
   let dispatch = useDispatchCart();
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const processOrder = async () => {
-    setIsLoading(true); // Start loading
+    setIsLoading(true);
 
     const user = JSON.parse(localStorage.getItem("user"));
     const newArray = data.map(({ restaurantid, itemname, ...rest }) => rest);
@@ -35,7 +37,9 @@ const Cart = () => {
       if (response.status === 200) {
         console.log("Order placed successfully");
         localStorage.removeItem("cart");
+
         alert("Order placed successfully");
+        navigate("/");
       } else {
         console.log("Order failed");
       }

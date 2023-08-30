@@ -12,7 +12,9 @@ const {
   additem,
   getAllFoodItems,
   getItemById,
+  getItemByrestaurantId,
 } = require("../../services/item");
+const { additemtocategory } = require("../../services/category");
 
 itemRouter.post("/additem", verifyUser, async (req, res) => {
   try {
@@ -24,12 +26,26 @@ itemRouter.post("/additem", verifyUser, async (req, res) => {
         console.log(err);
         res.status(201).send("Error in uploading image");
       }
-      console.log(result);
-      console.log(result.url);
-      const restaurantData = req.body;
-      console.log(req.body);
-      restaurantData.imageurl = result.url;
-      const item = await additem(restaurantData);
+
+      const itemData = req.body;
+      console.log(itemData);
+      itemData.imageurl = result.url;
+      const item = await additem(itemData);
+      console.log(typeof itemData.categories);
+      if (typeof itemData.categories === "string") {
+        let data = [];
+        data.push(itemData.categories);
+        itemData.categories = data;
+        console.log(typeof itemData.categories);
+      }
+      if (itemData.categories != null) {
+        itemData.categories.map(async (category) => {
+          const categoryid = parseInt(category);
+          const itemobject = { categoryid, itemid: item.dataValues.itemid };
+          console.log(itemobject);
+          await additemtocategory(itemobject);
+        });
+      }
 
       res.status(200).send(result.url);
     });
@@ -41,6 +57,14 @@ itemRouter.post("/additem", verifyUser, async (req, res) => {
 itemRouter.get("/getallitems", async (req, res) => {
   try {
     const items = await getAllFoodItems();
+    res.status(200).send(items);
+  } catch (error) {}
+});
+itemRouter.get("/getallitemsbyrestaurantid/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    getallrestaurantsforfilter;
+    const items = await getItemByrestaurantId(id);
     res.status(200).send(items);
   } catch (error) {}
 });
