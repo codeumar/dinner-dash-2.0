@@ -33,15 +33,13 @@ const Cart = () => {
         orderData,
         { headers }
       );
-      console.log(response);
+
       if (response.status === 200) {
-        console.log("Order placed successfully");
-        localStorage.removeItem("cart");
+        localStorage.removeItem(`cart${user.userid}`);
 
         alert("Order placed successfully");
         navigate("/");
       } else {
-        console.log("Order failed");
       }
     } catch (error) {
       console.error("Error placing order:", error);
@@ -64,7 +62,6 @@ const Cart = () => {
 
   return (
     <div>
-      {console.log(data)}
       <div className="container m-auto mt-5 table-responsive  table-responsive-sm table-responsive-md">
         <table className="table table-hover ">
           <thead className=" text-success fs-4">

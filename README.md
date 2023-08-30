@@ -29,7 +29,6 @@ Unauthenticated users cannot:
 As an authenticated user, you can do everything an unauthenticated user can do, except "log in." Additionally, you can:
 
 - Log out
-- Have your cart synced across sessions (if you log out and log back in from another device)
 - View your past orders, including details such as items ordered, order status, and more
 - Access item description pages from the order display
 - View the current status of an order

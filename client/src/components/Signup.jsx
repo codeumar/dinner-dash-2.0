@@ -21,7 +21,7 @@ const Signup = () => {
         password: password,
         role: "user",
       });
-      console.log(res.data.auth);
+
       if (res.data.auth) {
         localStorage.setItem("token", res.data.token);
         navigate(`/home/${res.data.addeddata.userid}`);

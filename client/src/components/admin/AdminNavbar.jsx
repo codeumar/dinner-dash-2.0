@@ -20,18 +20,15 @@ const AdminNavbar = ({
       const res = await axios.post("http://localhost:3003/auth/logout", null, {
         headers,
       });
-      console.log(res);
+
       if (res.status == 200) {
-        console.log("Logout successful:");
         localStorage.removeItem("token");
         localStorage.removeItem("user");
         navigate("/");
       } else {
-        console.log("Error");
       }
     } catch (error) {
       if (error) {
-        console.log("Logout failed:", error);
         alert("Your session have been expired, please login again");
         localStorage.removeItem("token");
         localStorage.removeItem("user");
@@ -44,9 +41,7 @@ const AdminNavbar = ({
   return (
     <div className="ms-5 mt-2">
       <nav className="navbar navbar-expand-lg navbar-dark bg-success ps-5 ">
-        <Link className="navbar-brand fs-1" href="#">
-          Dinner Dash 2.0
-        </Link>
+        <Link className="navbar-brand ">Dinner Dash 2.0</Link>
         <button
           className="navbar-toggler"
           type="button"
@@ -58,7 +53,7 @@ const AdminNavbar = ({
         >
           <span className="navbar-toggler-icon"></span>
         </button>
-        <div className="collapse navbar-collapse" id="navbarNav">
+        <div className="collapse navbar-collapse " id="navbarNav">
           <ul className="navbar-nav">
             <li className="nav-item active">
               <Link

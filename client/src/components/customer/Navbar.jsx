@@ -21,9 +21,9 @@ const Navbar = ({ onHomeClick, onOrdersClick }) => {
       const res = await axios.post("http://localhost:3003/auth/logout", null, {
         headers,
       });
-      console.log(res);
+      //(res);
       if (res.status == 200) {
-        console.log("Logout successful:");
+        //("Logout successful:");
         localStorage.removeItem("token");
         localStorage.removeItem("user");
         //onHomeClick();
@@ -32,7 +32,7 @@ const Navbar = ({ onHomeClick, onOrdersClick }) => {
       }
     } catch (error) {
       if (error) {
-        console.log("Logout failed:", error);
+        //("Logout failed:", error);
         alert("Your session have been expired, please login again");
         localStorage.removeItem("token");
         localStorage.removeItem("user");

@@ -31,11 +31,11 @@ db.orderitem.belongsTo(db.item, { foreignKey: "itemid" });
 db.categoryitem.belongsTo(db.category, { foreignKey: "categoryid" });
 
 sequelize.authenticate().then(() => {
-  console.log("Connected to database successfully");
+  //("Connected to database successfully");
 });
 
 sequelize.sync({ force: false }).then(() => {
-  console.log("Database has been synced");
+  //("Database has been synced");
 });
 
 module.exports = db;

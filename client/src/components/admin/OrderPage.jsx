@@ -22,18 +22,18 @@ const OrderPage = () => {
   const fetchRestaurants = async () => {
     const token = localStorage.getItem("token");
     const user = JSON.parse(localStorage.getItem("user"));
-    console.log(user);
+
     const headers = {
       authorization: token,
       CustomHeader: "custom-value",
     };
-    console.log(token);
+
     try {
       const response = await axios.get(
         `http://127.0.0.1:3003/restaurants/getallrestaurants/${userid}`,
         { headers }
       );
-      console.log(response);
+
       setRestaurants(response.data);
     } catch (error) {
       console.error("Error fetching restaurants:", error);
@@ -266,7 +266,7 @@ const OrderPage = () => {
                       const itemDetailsResponse = await axios.get(
                         `http://127.0.0.1:3003/items/${item.itemid}`
                       );
-                      console.log(itemDetailsResponse);
+
                       return itemDetailsResponse.data;
                     } catch (error) {
                       console.error("Error fetching item details:", error);

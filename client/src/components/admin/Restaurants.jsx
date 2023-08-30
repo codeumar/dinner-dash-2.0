@@ -12,19 +12,19 @@ const Restaurants = () => {
   const fetchRestaurants = async () => {
     const token = localStorage.getItem("token");
     const user = JSON.parse(localStorage.getItem("user"));
-    console.log(user);
+
     if (!user) return;
     const headers = {
       authorization: token,
       CustomHeader: "custom-value",
     };
-    console.log(token);
+
     try {
       const response = await axios.get(
         `http://127.0.0.1:3003/restaurants/getallrestaurants/${user.userid}`,
         { headers }
       );
-      console.log(response);
+
       setRestaurants(response.data);
     } catch (error) {
       console.error("Error fetching restaurants:", error);
@@ -33,7 +33,7 @@ const Restaurants = () => {
 
   return (
     <Container>
-      <h1 className="my-4">Restaurant List {restaurants.length}</h1>
+      <h1 className="my-4">Restaurant List </h1>
       <h3 className="my-4">Total: {restaurants.length}</h3>
       <Row>
         {restaurants.map((restaurant) => (
@@ -57,7 +57,6 @@ const Restaurants = () => {
                   View Products
                 </Link>
               </Card.Body>
-              {/* Rest of your card content */}
             </Card>
           </Col>
         ))}

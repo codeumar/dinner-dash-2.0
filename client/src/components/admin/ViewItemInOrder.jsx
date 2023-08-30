@@ -18,7 +18,7 @@ const ViewItemInOrder = () => {
   const fetchData = async (itemId) => {
     try {
       const res = await axios.get(`http://127.0.0.1:3003/items/${itemId}`);
-      console.log(res.data.message);
+      //(res.data.message);
       if (res.data.message !== "-1") {
         setItemData(res.data);
       }
@@ -34,11 +34,11 @@ const ViewItemInOrder = () => {
       return;
     }
     let existingItemIndex = -1;
-    //  console.log(item.item.restaurantid);
+    //  //(item.item.restaurantid);
     //
     for (let i = 0; i < data.length; i++) {
-      console.log(data[i]);
-      console.log(itemData.restaurantid);
+      //(data[i]);
+      //(itemData.restaurantid);
       if (data[i].restaurantid !== itemData.restaurantid) {
         alert("You can't order from multiple restaurants at once!");
         return;

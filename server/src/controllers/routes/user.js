@@ -1,11 +1,8 @@
 const { addUser, loginUser, findUserById } = require("../../services/user");
 const jwt = require("jsonwebtoken");
-const verifyUser = require("../middlewares/verifyjwttoken");
-const express = require("express");
+require("dotenv").config();
 
-const userRoute = express.Router();
-
-userRoute.post("/login", async (req, res) => {
+const LoginUser = async (req, res) => {
   const user = await loginUser(req.body.email);
 
   if (user == null) {
@@ -21,38 +18,43 @@ userRoute.post("/login", async (req, res) => {
       token: null,
     });
   } else {
-    jwt.sign({ user }, "umar", { expiresIn: "1h" }, (err, token) => {
-      if (err) {
-        res.status(400).json({
-          auth: false,
-          message: "Error in loging in Please try again",
-          token: null,
-        });
-      } else {
-        const userdata = {
-          name: user.name,
-          email: user.email,
-          role: user.role,
-          phone: user.phone,
-          userid: user.userid,
-        };
+    jwt.sign(
+      { user },
+      process.env.ACCESS_TOKEN_KEY,
+      { expiresIn: "1h" },
+      (err, token) => {
+        if (err) {
+          res.status(400).json({
+            auth: false,
+            message: "Error in loging in Please try again",
+            token: null,
+          });
+        } else {
+          const userdata = {
+            name: user.name,
+            email: user.email,
+            role: user.role,
+            phone: user.phone,
+            userid: user.userid,
+          };
 
-        res.cookie("jwttoken", token, {
-          expires: new Date(Date.now() + 900000000),
-          httpOnly: true,
-          sameSite: true,
-        });
-        res.status(200).header("token", token).json({
-          auth: true,
-          userdata,
-          token,
-        });
+          res.cookie("jwttoken", token, {
+            expires: new Date(Date.now() + 900000000),
+            httpOnly: true,
+            sameSite: true,
+          });
+          res.status(200).header("token", token).json({
+            auth: true,
+            userdata,
+            token,
+          });
+        }
       }
-    });
+    );
   }
-});
+};
 
-userRoute.post("/signup", async (req, res) => {
+const SignUpUser = async (req, res) => {
   try {
     const signupData = {
       name: req.body.name,
@@ -69,27 +71,33 @@ userRoute.post("/signup", async (req, res) => {
         token: null,
       });
     } else {
-      jwt.sign({ addeddata }, "umar", { expiresIn: "1h" }, (err, token) => {
-        if (err) {
-          res.status(400).json({
+      jwt.sign(
+        { addeddata },
+        process.env.ACCESS_TOKEN_KEY,
+        { expiresIn: "1h" },
+        (err, token) => {
+          if (err) {
+            res.status(400).json({
+              auth: true,
+              message: "Error in loging in Please try again",
+              token: null,
+            });
+          }
+          res.status(200).header({ token: token }).json({
             auth: true,
-            message: "Error in loging in Please try again",
-            token: null,
+            message: "Success",
+            addeddata,
+            token,
           });
         }
-        res.status(200).header({ token: token }).json({
-          auth: true,
-          message: "Success",
-          addeddata,
-          token,
-        });
-      });
+      );
     }
   } catch (error) {
     res.status(500).send(error.msg);
   }
-});
-userRoute.get("/getuserbyid", async (req, res) => {
+};
+
+const GetUserById = async (req, res) => {
   try {
     const addeddata = await addUser(req.id);
     res.status(200).json(addeddata);
@@ -97,8 +105,8 @@ userRoute.get("/getuserbyid", async (req, res) => {
     s;
     res.status(500).send(error.msg);
   }
-});
-userRoute.get("/getuserbyid/:id", async (req, res) => {
+};
+const getUserByUserId = async (req, res) => {
   const { id } = req.params;
   try {
     const addeddata = await findUserById(id);
@@ -106,14 +114,21 @@ userRoute.get("/getuserbyid/:id", async (req, res) => {
   } catch (error) {
     res.status(500).send(error.msg);
   }
-});
-userRoute.post("/logout", verifyUser, async (req, res) => {
-  console.log("User Loged out");
+};
+const logoutUser = async (req, res) => {
+  //("User Loged out");
   res.status(200).json({ auth: false, message: "Logged Out" });
-});
+};
 
-userRoute.post("/verifyuser", verifyUser, async (req, res) => {
+const verifyUserAndAuth = async (req, res) => {
   res.status(200).json({ auth: true, message: "User Verified" });
-});
+};
 
-module.exports = userRoute;
+module.exports = {
+  LoginUser,
+  SignUpUser,
+  GetUserById,
+  logoutUser,
+  getUserByUserId,
+  verifyUserAndAuth,
+};

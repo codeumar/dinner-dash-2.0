@@ -45,7 +45,7 @@ const CreateStore = () => {
         authorization: token,
         CustomHeader: "custom-value",
       };
-      console.log(token);
+
       await axios
         .post(
           "http://127.0.0.1:3003/restaurants/createnewrestaurant",
@@ -60,11 +60,8 @@ const CreateStore = () => {
         )
         .then((res) => {
           setErrorMessage("Store Created Successfully");
-          console.log(res);
         });
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
   const isValidEmail = (email) => {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

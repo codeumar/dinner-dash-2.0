@@ -11,6 +11,7 @@ const {
   getOrdersByUserId,
   updateOrder,
   getOrdersByOrderId,
+  getOrdersByRestaurantId,
 } = require("../../services/order");
 
 orderRouter.post("/create", async (req, res) => {
@@ -23,7 +24,7 @@ orderRouter.post("/create", async (req, res) => {
       totalprice: totalprice,
       status: status,
     });
-    console.log(sendDataToDb);
+    //(sendDataToDb);
     const orderId = sendDataToDb.dataValues.orderid;
     items.map(async (item) => {
       await createOrderItem({
@@ -45,12 +46,11 @@ orderRouter.post("/create", async (req, res) => {
   } catch (error) {}
 });
 
-//write a route to get all orders of a user
 orderRouter.get("/getall/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const orders = await getOrdersByUserId(id);
-    console.log(orders);
+    const orders = await getOrdersByRestaurantId(id);
+    //(orders);
     res.status(200).json({
       message: "Orders fetched successfully",
       data: orders,
@@ -66,7 +66,7 @@ orderRouter.get("/getallbyuserid/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const orders = await getOrdersByUserId(id);
-    console.log(orders);
+    //(orders);
     res.status(200).json({
       message: "Orders fetched successfully",
       data: orders,
@@ -82,7 +82,7 @@ orderRouter.get("/items/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const orders = await getOrdersByOrderId(id);
-    console.log(orders);
+    //(orders);
     res.status(200).json({
       message: "Orders fetched successfully",
       data: orders,

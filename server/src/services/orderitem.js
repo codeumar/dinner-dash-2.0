@@ -23,9 +23,6 @@ const removeOrderedItemQuantity = async (itemId) => {
     await item.update({
       quantity: updatedQuantity,
     });
-    console.log(
-      `Item quantity for itemid ${itemid} updated to ${updatedQuantity}`
-    );
   } catch (error) {
     throw error;
   }

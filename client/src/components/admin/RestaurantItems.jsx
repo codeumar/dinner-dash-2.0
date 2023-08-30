@@ -1,29 +1,71 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { Card, Col, Container } from "react-bootstrap";
+import { Button, Card, Col, Container } from "react-bootstrap";
 import AdminNavbar from "./AdminNavbar";
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
 const RestaurantItems = () => {
+  const toggle = false;
   const { restaurantid } = useParams();
   const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchItems();
-  }, [restaurantid]);
+  }, [loading]);
 
   const fetchItems = async () => {
     try {
       const response = await axios.get(
         `http://127.0.0.1:3003/items/getallitemsbyrestaurantid/${restaurantid}`
       );
-      console.log(response);
+      //(response);
       setItems(response.data);
     } catch (error) {
       console.error("Error fetching items:", error);
     }
   };
-  const toggle = false;
+  const retireItem = async (itemId) => {
+    try {
+      setLoading(true);
+      await axios
+        .put(`http://127.0.0.1:3003/items/retire/${itemId}`, {
+          status: false,
+        })
+        .then((response) => {
+          const updatedItems = items.map((item) =>
+            item.id === itemId ? { ...item, status: false } : item
+          );
+          alert("Item Retired");
+          setItems(updatedItems);
+          setLoading(false);
+        });
+    } catch (error) {
+      console.error("Error retiring item:", error);
+    }
+  };
+  const restoreItem = async (itemId) => {
+    try {
+      setLoading(true);
+      await axios
+        .put(`http://127.0.0.1:3003/items/restore/${itemId}`, {
+          status: true,
+        })
+        .then((response) => {
+          const updatedItems = items.map((item) =>
+            item.id === itemId ? { ...item, status: false } : item
+          );
+          alert("Item restored");
+          setItems(updatedItems);
+          setLoading(false);
+        });
+    } catch (error) {
+      console.error("Error retiring item:", error);
+    }
+  };
+
   return (
     <>
       <div className="container-fluid">
@@ -59,27 +101,44 @@ const RestaurantItems = () => {
         <Container>
           <h5>Items for Restaurant {restaurantid}</h5>
         </Container>
-        {items.map((item) => (
+        {loading ? (
           <Container>
-            <Col key={item.restaurantid} md={12} className="mb-4">
-              <Card className="h-100 shadow-sm">
-                <img
-                  src={item.imageurl}
-                  style={{ height: "150px", width: "150px" }}
-                />
-                <Card.Body>
-                  <Card.Text>
-                    <strong>Restaurant No#: </strong> {item.restaurantid}
-                  </Card.Text>
-                  <Card.Title>Name: {item.name}</Card.Title>
-                  <Card.Subtitle className="mb-2 text-muted">
-                    <strong>Quantity: </strong> {item.quantity}
-                  </Card.Subtitle>
-                </Card.Body>
-              </Card>
+            <Col>
+              <p>Loading...</p>
             </Col>
           </Container>
-        ))}
+        ) : (
+          items.map((item) => (
+            <Container>
+              <Col key={item.restaurantid} md={12} className="mb-4">
+                <Card className="h-100 shadow-sm">
+                  <img
+                    src={item.imageurl}
+                    style={{ height: "150px", width: "150px" }}
+                  />
+                  <Card.Body>
+                    <Card.Text>
+                      <strong>Restaurant No#: </strong> {item.restaurantid}
+                    </Card.Text>
+                    <Card.Title>Name: {item.name}</Card.Title>
+                    <Card.Subtitle className="mb-2 text-muted">
+                      <strong>Quantity: </strong> {item.quantity}
+                    </Card.Subtitle>
+                    {item.status ? (
+                      <Button onClick={() => retireItem(item.itemid)}>
+                        Retire Item
+                      </Button>
+                    ) : (
+                      <Button onClick={() => restoreItem(item.itemid)}>
+                        Restore Item
+                      </Button>
+                    )}
+                  </Card.Body>
+                </Card>
+              </Col>
+            </Container>
+          ))
+        )}
       </div>
     </>
   );

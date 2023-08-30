@@ -22,7 +22,7 @@ const AddProducts = () => {
       const response = await axios.get(
         `http://127.0.0.1:3003/category/getallcategory`
       );
-      console.log(response);
+
       setCategories(response.data);
     } catch (error) {
       console.error("Error fetching restaurants:", error);
@@ -31,18 +31,18 @@ const AddProducts = () => {
   const fetchRestaurants = async () => {
     const token = localStorage.getItem("token");
     const user = JSON.parse(localStorage.getItem("user"));
-    console.log(user);
+
     const headers = {
       authorization: token,
       CustomHeader: "custom-value",
     };
-    console.log(token);
+
     try {
       const response = await axios.get(
         `http://127.0.0.1:3003/restaurants/getallrestaurants/${user.userid}`,
         { headers }
       );
-      console.log(response);
+
       setRestaurants(response.data);
     } catch (error) {
       console.error("Error fetching restaurants:", error);
@@ -72,9 +72,8 @@ const AddProducts = () => {
     )
       return alert("Please fill all the fields");
 
-    console.log(productInfo.restaurantId);
     e.preventDefault();
-    console.log(img.current.files[0]);
+
     try {
       const formData = new FormData();
       formData.append("name", productInfo.name);
@@ -89,7 +88,7 @@ const AddProducts = () => {
         formData.append("categories", categoryName);
       });
       const token = localStorage.getItem("token");
-      console.log(formData);
+
       const headers = {
         authorization: token,
         CustomHeader: "custom-value",
@@ -100,8 +99,13 @@ const AddProducts = () => {
           headers,
         })
         .then((res) => {
-          setSuccessMessage("Item Added Successfully");
-          setErrorMessage("");
+          if (res.data == "Item already exists") {
+            setErrorMessage(`${res.data} Please use a different name`);
+            setSuccessMessage("");
+          } else {
+            setSuccessMessage(`Item Added Successfully`);
+            setErrorMessage("");
+          }
         });
     } catch (error) {
       setErrorMessage("Item Adding Failed");
@@ -231,7 +235,7 @@ const AddProducts = () => {
           )}
           {errorMsg && (
             <div>
-              <p className="text-success">{errorMsg}</p>
+              <p className="text-danger">{errorMsg}</p>
             </div>
           )}
           <div className="text-center">
