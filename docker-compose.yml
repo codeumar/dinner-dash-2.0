@@ -1,0 +1,43 @@
+version: '3'
+services:
+  frontend:
+    build: ./client
+    container_name: dinner-dash
+    ports:
+      - '3000:3000'
+    restart: always
+    stdin_open: true
+    tty: true
+    depends_on:
+      - backend
+    networks:
+      - dinner-dash
+  backend:
+    build: ./server
+    container_name: node-api
+    ports:
+      - '3003:3003'
+    restart: always
+    depends_on:
+      - database
+    networks:
+      - dinner-dash
+  database:
+    image: postgres:latest
+    container_name: postgres-db
+    environment:
+      POSTGRES_DB: testproject
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123123
+    ports:
+      - '5432:5432'
+    restart: always
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - dinner-dash
+volumes:
+  pgdata:
+networks:
+  dinner-dash:
+    driver: bridge

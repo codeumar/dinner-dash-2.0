@@ -1,22 +1,23 @@
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
 const verifyUser = async (req, res, next) => {
   try {
-    //console.log(req.headers);
+    ////(req.headers);
     const token = req.headers.authorization;
     if (!token) {
       res.status(403).json({ auth: false, message: "No Tokken Provided" });
     } else {
-      jwt.verify(token, "umar", (err, user) => {
+      jwt.verify(token, process.env.ACCESS_TOKEN_KEY, (err, user) => {
         if (err) {
           res.status(401).json({ auth: false, message: "Token Expired" });
         } else {
-          req.id = user.id;
+          req.id = user.user.userid;
           next();
         }
       });
     }
   } catch (error) {
-    console.log(error);
+    //(error);
   }
 };
 

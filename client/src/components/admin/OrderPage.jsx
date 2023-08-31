@@ -17,23 +17,25 @@ const OrderPage = () => {
   useEffect(() => {
     fetchRestaurants();
     fetchOrders();
-  }, []);
+  }, [selectedRestaurantId]);
 
   const fetchRestaurants = async () => {
     const token = localStorage.getItem("token");
     const user = JSON.parse(localStorage.getItem("user"));
-    console.log(user);
+
     const headers = {
       authorization: token,
       CustomHeader: "custom-value",
     };
-    console.log(token);
+
     try {
       const response = await axios.get(
-        `http://127.0.0.1:3003/restaurants/getallrestaurants/${userid}`,
+        `${
+          import.meta.env.VITE_BASE_URL
+        }/restaurants/getallrestaurants/${userid}`,
         { headers }
       );
-      console.log(response);
+
       setRestaurants(response.data);
     } catch (error) {
       console.error("Error fetching restaurants:", error);
@@ -43,7 +45,7 @@ const OrderPage = () => {
   const fetchOrders = async () => {
     try {
       const response = await axios.get(
-        `http://127.0.0.1:3003/order/getall/${selectedRestaurantId}`
+        `${import.meta.env.VITE_BASE_URL}/order/getall/${selectedRestaurantId}`
       );
       setOrders(response.data.data);
     } catch (error) {
@@ -53,9 +55,12 @@ const OrderPage = () => {
 
   const handleStatusChange = async (orderId, newStatus) => {
     try {
-      await axios.put(`http://127.0.0.1:3003/order/update/${orderId}`, {
-        status: newStatus,
-      });
+      await axios.put(
+        `${import.meta.env.VITE_BASE_URL}/order/update/${orderId}`,
+        {
+          status: newStatus,
+        }
+      );
       fetchOrders();
     } catch (error) {
       console.error("Error updating status:", error);
@@ -266,7 +271,7 @@ const OrderPage = () => {
                       const itemDetailsResponse = await axios.get(
                         `http://127.0.0.1:3003/items/${item.itemid}`
                       );
-                      console.log(itemDetailsResponse);
+
                       return itemDetailsResponse.data;
                     } catch (error) {
                       console.error("Error fetching item details:", error);

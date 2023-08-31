@@ -13,15 +13,19 @@ const Signup = () => {
 
   const handleSignUp = async (e) => {
     e.preventDefault();
+    console.log(import.meta.env.VITE_BASE_URL);
     try {
-      const res = await axios.post("http://localhost:3003/auth/signup", {
-        name: name,
-        phone: phone,
-        email: email,
-        password: password,
-        role: "user",
-      });
-      console.log(res.data.auth);
+      const res = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/auth/signup`,
+        {
+          name: name,
+          phone: phone,
+          email: email,
+          password: password,
+          role: "user",
+        }
+      );
+
       if (res.data.auth) {
         localStorage.setItem("token", res.data.token);
         navigate(`/home/${res.data.addeddata.userid}`);

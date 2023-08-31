@@ -18,9 +18,9 @@ const AllOrder = ({ userId }) => {
   const fetchUserOrders = async () => {
     try {
       const response = await axios.get(
-        `http://127.0.0.1:3003/order/getallbyuserid/${userid}`
+        `${import.meta.env.VITE_BASE_URL}/order/getallbyuserid/${userid}`
       );
-      console.log(response.data);
+      //(response.data);
       setOrders(response.data.data);
     } catch (error) {
       console.error("Error fetching user orders:", error);

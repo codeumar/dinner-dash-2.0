@@ -26,6 +26,7 @@ const Dashboard = () => {
   const [showaddproduct, setShowAddProductForm] = useState(false);
   const [showproductpage, setProductPage] = useState(true);
   const [showorderspage, setOrdersPage] = useState(false);
+  const toggle = true;
 
   return (
     <>
@@ -55,6 +56,7 @@ const Dashboard = () => {
             setShowCreateStoreForm(false);
             setShowAddProductForm(false);
           }}
+          togglerValue={toggle}
         />
       </div>
       <div className="username-box">

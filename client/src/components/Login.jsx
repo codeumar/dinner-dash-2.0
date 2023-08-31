@@ -13,7 +13,7 @@ const Login = () => {
     try {
       await axios
         .post(
-          "http://127.0.0.1:3003/auth/login",
+          `${import.meta.env.VITE_BASE_URL}/auth/login`,
           {
             email,
             password,
@@ -28,6 +28,7 @@ const Login = () => {
             return;
           }
           if (res.status === 200) {
+            console.log(res.headers.token);
             localStorage.setItem("token", res.data.token);
             localStorage.setItem("user", JSON.stringify(res.data.userdata));
             if (res.data.userdata.role == "user") navigate("/");
@@ -39,7 +40,6 @@ const Login = () => {
         });
     } catch (error) {
       if (error.response && error.response.status == 404) {
-        console.log(error);
         setError("Email or Password are not correct");
       } else {
         setError("User Does not exists");

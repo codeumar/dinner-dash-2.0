@@ -11,11 +11,10 @@ const verifyUser = require("../middlewares/verifyjwttoken");
 restaurantRouter.post("/createnewrestaurant", verifyUser, async (req, res) => {
   try {
     const restaurantData = req.body;
-    console.log(req.body);
+
     const restaurant = await createNewRestaurant(restaurantData);
     res.status(200).send(restaurant);
   } catch (error) {
-    console.log(error);
     res.status(200).send(error);
   }
 });
@@ -25,7 +24,6 @@ restaurantRouter.get("/getallrestaurants", verifyUser, async (req, res) => {
     const restaurant = await getAllRestaurants();
     res.status(200).send(restaurant);
   } catch (error) {
-    console.log(error);
     res.status(200).send(error);
   }
 });
@@ -34,7 +32,6 @@ restaurantRouter.get("/getallrestaurantsforfilter", async (req, res) => {
     const restaurant = await getAllRestaurants();
     res.status(200).send(restaurant);
   } catch (error) {
-    console.log(error);
     res.status(200).send(error);
   }
 });
@@ -44,7 +41,6 @@ restaurantRouter.get("/getallrestaurants/:id", verifyUser, async (req, res) => {
     const restaurant = await getAllRestaurantsbyid(id);
     res.status(200).send(restaurant);
   } catch (error) {
-    console.log(error);
     res.status(200).send(error);
   }
 });

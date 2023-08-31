@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useCart, useDispatchCart } from "../../context/ContextReducer";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
   let data = useCart();
   let dispatch = useDispatchCart();
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const processOrder = async () => {
-    setIsLoading(true); // Start loading
+    setIsLoading(true);
 
     const user = JSON.parse(localStorage.getItem("user"));
     const newArray = data.map(({ restaurantid, itemname, ...rest }) => rest);
@@ -27,17 +29,17 @@ const Cart = () => {
         CustomHeader: "custom-value",
       };
       const response = await axios.post(
-        "http://127.0.0.1:3003/order/create",
+        `${import.meta.env.VITE_BASE_URL}/order/create`,
         orderData,
         { headers }
       );
-      console.log(response);
+
       if (response.status === 200) {
-        console.log("Order placed successfully");
-        localStorage.removeItem("cart");
+        localStorage.removeItem(`cart${user.userid}`);
+
         alert("Order placed successfully");
+        navigate("/");
       } else {
-        console.log("Order failed");
       }
     } catch (error) {
       console.error("Error placing order:", error);
@@ -60,7 +62,6 @@ const Cart = () => {
 
   return (
     <div>
-      {console.log(data)}
       <div className="container m-auto mt-5 table-responsive  table-responsive-sm table-responsive-md">
         <table className="table table-hover ">
           <thead className=" text-success fs-4">

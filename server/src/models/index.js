@@ -13,6 +13,8 @@ db.restaurant = restaurant(sequelize, Sequelize);
 db.item = require("./Item")(sequelize, Sequelize);
 db.order = require("./order")(sequelize, Sequelize);
 db.orderitem = require("./orderitem")(sequelize, Sequelize);
+db.category = require("./category")(sequelize, Sequelize);
+db.categoryitem = require("./categoryitem")(sequelize, Sequelize);
 
 db.restaurant.belongsTo(db.users, { foreignKey: "userid" });
 db.item.belongsTo(db.restaurant, { foreignKey: "restaurantid" });
@@ -24,12 +26,16 @@ db.order.belongsTo(db.users, { foreignKey: "userid" });
 db.orderitem.belongsTo(db.order, { foreignKey: "orderid" });
 db.orderitem.belongsTo(db.item, { foreignKey: "itemid" });
 
+//category relations
+//db.categoryitem.belongsTo(db.item, { foreignKey: "itemid" });
+db.categoryitem.belongsTo(db.category, { foreignKey: "categoryid" });
+
 sequelize.authenticate().then(() => {
-  console.log("Connected to database successfully");
+  //("Connected to database successfully");
 });
 
 sequelize.sync({ force: false }).then(() => {
-  console.log("Database has been synced");
+  //("Database has been synced");
 });
 
 module.exports = db;
