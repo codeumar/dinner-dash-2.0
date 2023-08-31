@@ -17,9 +17,13 @@ const AdminNavbar = ({
       CustomHeader: "custom-value",
     };
     try {
-      const res = await axios.post("http://localhost:3003/auth/logout", null, {
-        headers,
-      });
+      const res = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/auth/logout`,
+        null,
+        {
+          headers,
+        }
+      );
 
       if (res.status == 200) {
         localStorage.removeItem("token");

@@ -17,7 +17,9 @@ const ItemDetails = () => {
 
   const fetchData = async (itemId) => {
     try {
-      const res = await axios.get(`http://127.0.0.1:3003/items/${itemId}`);
+      const res = await axios.get(
+        `${import.meta.env.VITE_BASE_URL}/items/${itemId}`
+      );
       //(res.data.message);
       if (res.data.message !== "-1") {
         setItemData(res.data);

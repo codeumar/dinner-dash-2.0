@@ -19,7 +19,9 @@ const RestaurantItems = () => {
   const fetchItems = async () => {
     try {
       const response = await axios.get(
-        `http://127.0.0.1:3003/items/getallitemsbyrestaurantid/${restaurantid}`
+        `${
+          import.meta.env.VITE_BASE_URL
+        }/items/getallitemsbyrestaurantid/${restaurantid}`
       );
       //(response);
       setItems(response.data);
@@ -31,7 +33,7 @@ const RestaurantItems = () => {
     try {
       setLoading(true);
       await axios
-        .put(`http://127.0.0.1:3003/items/retire/${itemId}`, {
+        .put(`${import.meta.env.VITE_BASE_URL}/items/retire/${itemId}`, {
           status: false,
         })
         .then((response) => {
@@ -50,7 +52,7 @@ const RestaurantItems = () => {
     try {
       setLoading(true);
       await axios
-        .put(`http://127.0.0.1:3003/items/restore/${itemId}`, {
+        .put(`${import.meta.env.VITE_BASE_URL}/items/restore/${itemId}`, {
           status: true,
         })
         .then((response) => {

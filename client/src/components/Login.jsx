@@ -13,7 +13,7 @@ const Login = () => {
     try {
       await axios
         .post(
-          "http://127.0.0.1:3003/auth/login",
+          `${import.meta.env.VITE_BASE_URL}/auth/login`,
           {
             email,
             password,

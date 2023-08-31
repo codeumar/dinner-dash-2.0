@@ -12,7 +12,7 @@ const OrderItemList = ({ item }) => {
   const fetchItemDetails = async () => {
     try {
       const response = await axios.get(
-        `http://127.0.0.1:3003/items/${item.itemid}`
+        `${import.meta.env.VITE_BASE_URL}/items/${item.itemid}`
       );
       setItemDetails(response.data);
     } catch (error) {

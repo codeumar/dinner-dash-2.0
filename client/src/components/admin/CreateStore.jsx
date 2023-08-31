@@ -48,7 +48,7 @@ const CreateStore = () => {
 
       await axios
         .post(
-          "http://127.0.0.1:3003/restaurants/createnewrestaurant",
+          `${import.meta.env.VITE_BASE_URL}/restaurants/createnewrestaurant`,
           {
             name: storeInfo.name,
             email: storeInfo.email,

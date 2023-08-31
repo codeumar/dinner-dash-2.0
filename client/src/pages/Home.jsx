@@ -24,7 +24,9 @@ const Home = () => {
   const [selectedRestaurant, setSelectedRestaurant] = useState(null);
 
   const getAllItems = async () => {
-    const allitems = await axios.get("http://127.0.0.1:3003/items/getallitems");
+    const allitems = await axios.get(
+      `${import.meta.env.VITE_BASE_URL}/items/getallitems`
+    );
     setItems(allitems.data);
   };
   useEffect(() => {
@@ -37,14 +39,16 @@ const Home = () => {
   const [restaurants, setRestaurants] = useState([]); //
   const getAllRestaurants = async () => {
     const allRestaurants = await axios.get(
-      "http://127.0.0.1:3003/restaurants/getallrestaurantsforfilter"
+      `${import.meta.env.VITE_BASE_URL}/restaurants/getallrestaurantsforfilter`
     );
 
     setRestaurants(allRestaurants.data);
   };
   const getRestaurantItems = async (restaurantId) => {
     const response = await axios.get(
-      `http://127.0.0.1:3003/items/getallitemsbyrestaurantid/${restaurantId}`
+      `${
+        import.meta.env.VITE_BASE_URL
+      }/items/getallitemsbyrestaurantid/${restaurantId}`
     );
 
     setItems(response.data);

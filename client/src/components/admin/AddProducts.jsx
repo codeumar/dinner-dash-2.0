@@ -20,7 +20,7 @@ const AddProducts = () => {
   const fetchAllCategories = async () => {
     try {
       const response = await axios.get(
-        `http://127.0.0.1:3003/category/getallcategory`
+        `${import.meta.env.VITE_BASE_URL}/category/getallcategory`
       );
 
       setCategories(response.data);
@@ -39,7 +39,9 @@ const AddProducts = () => {
 
     try {
       const response = await axios.get(
-        `http://127.0.0.1:3003/restaurants/getallrestaurants/${user.userid}`,
+        `${import.meta.env.VITE_BASE_URL}/restaurants/getallrestaurants/${
+          user.userid
+        }`,
         { headers }
       );
 

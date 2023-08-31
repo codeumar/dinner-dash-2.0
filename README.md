@@ -67,16 +67,19 @@ Administrators cannot:
 2. Navigate to the project directory.
 3. Install dependencies using your preferred package manager:
 
-```bash
-npm install
-# or
-yarn install
-```
+## For runing on local
 
 ```bash
-npm start
+cd client
 
-# or
+npm i
 
-yarn start
+npm run dev
+
+cd server
+
+npm i
+
+nodemon start
+
 ```

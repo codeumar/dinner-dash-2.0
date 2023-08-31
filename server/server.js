@@ -12,7 +12,7 @@ const cartRouter = require("./src/controllers/routes/cart");
 const categoryRouter = require("./src/controllers/routes/category");
 const userRoute = require("./src/routes/user");
 
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 app.use(express.json());
 app.use(expressfileupload({ useTempFiles: true }));
 app.use(express.urlencoded({ extended: true }));

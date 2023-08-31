@@ -29,7 +29,7 @@ const Cart = () => {
         CustomHeader: "custom-value",
       };
       const response = await axios.post(
-        "http://127.0.0.1:3003/order/create",
+        `${import.meta.env.VITE_BASE_URL}/order/create`,
         orderData,
         { headers }
       );

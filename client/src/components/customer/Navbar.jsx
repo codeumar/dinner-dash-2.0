@@ -18,9 +18,13 @@ const Navbar = ({ onHomeClick, onOrdersClick }) => {
       CustomHeader: "custom-value",
     };
     try {
-      const res = await axios.post("http://localhost:3003/auth/logout", null, {
-        headers,
-      });
+      const res = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/auth/logout`,
+        null,
+        {
+          headers,
+        }
+      );
       //(res);
       if (res.status == 200) {
         //("Logout successful:");
